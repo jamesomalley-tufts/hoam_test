@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat | Hoam.ai</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script> <!-- socket.io client -->
+    <script src="client.js" defer></script>
+</head>
+<body>
+
+<!-- Modal and Dark Mode Toggle + Header -->
+<div id="modal" onclick="closeModal()">
+    <div id="modalContent"></div>
+</div>
+
+<header>
+    <div class="logo-title">
+        <img src="logo.png" alt="Hoam.ai Logo" class="logo">
+        Hoam.ai
+    </div>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">Why Hoam.ai</a>
+        <a href="documents.html">My Documents</a>
+        <a href="login.html">Login</a>
+        <a href="chat.html">Chat</a>
+        <button onclick="toggleDarkMode()" class="dark-mode-toggle">🌙</button>
+    </nav>
+</header>
+
+<!-- Page Content -->
+<div class="container">
+    <h1 align="center">Chat with Your Documents</h1>
+    <p align="center">Ask questions based on your HOA's already uploaded documents or add your own to the chat.</p>
+
+    <div class="tools">
+
+        <!-- Document List Card -->
+        <div id="uploadDocument" class="card">
+            <h2>Your HOA Documents</h2>
+            <h3>Uploaded Files</h3>
+            <ul id="listFiles" class="file-list"></ul>
+            <a href="documents.html">Click here to upload more documents</a>
+        </div>
+
+        <!-- Chat Card -->
+        <div id="chat" class="card">
+            <h2>Chat with Hoam.ai</h2>
+            <ul id="messages" class="chat-box"></ul>
+
+            <form id="form" action="" style="display: flex; margin-top: 10px;">
+                <input id="input" autocomplete="on" placeholder="Type your question..." style="flex: 1; padding: 10px; font-size: 16px; border-radius: 8px; margin-right: 10px;">
+                <button type="submit" style="padding: 10px 20px; background-color: #0074D9; color: white; border: none; border-radius: 8px; font-size: 16px;">Ask the AI</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Page Scripts -->
+
+<script type="module">
+const socket = io();
+let selectedDocument = null;
+
+// Handle chat form submission
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const messages = document.getElementById('messages');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (input.value) {
+        let finalMessage = input.value;
+        if (selectedDocument) {
+            finalMessage = `[${selectedDocument}] ${finalMessage}`;
+        }
+        socket.emit('chat message', finalMessage);
+        input.value = '';
+    }
+});
+
+socket.on('chat message', (msg) => {
+    const item = document.createElement('li');
+    item.innerText = msg;
+    messages.appendChild(item);
+    messages.scrollTop = messages.scrollHeight;
+});
+
+// Load file list
+async function loadFileList() {
+    try {
+        const fileList = await fetch('/api/files');
+
+        if (!fileList.ok) {
+            throw new Error(`HTTP error! status: ${fileList.status}`);
+        }
+
+        const files = await fileList.json();
+        const listElement = document.getElementById('listFiles');
+        listElement.innerHTML = ''; // Clear any old content
+
+        files.forEach(file => {
+            const li = document.createElement('li');
+            li.textContent = file.filename;
+            li.classList.add('file-item');
+
+            li.addEventListener('click', () => {
+                selectFile(file.filename);
+            });
+
+            listElement.appendChild(li);
+        });
+    } catch (error) {
+        console.error('Error loading file list:', error);
+    }
+}
+
+function selectFile(filename) {
+    selectedDocument = filename;
+    highlightSelectedFile(filename);
+}
+
+function highlightSelectedFile(filename) {
+    const items = document.querySelectorAll('#listFiles li');
+    items.forEach(item => {
+        if (item.textContent === filename) {
+            item.style.backgroundColor = '#2ecc40'; // green
+            item.style.color = 'white';
+        } else {
+            item.style.backgroundColor = '';
+            item.style.color = '';
+        }
+    });
+}
+
+loadFileList();
+</script>
+
+</body>
+</html>
+

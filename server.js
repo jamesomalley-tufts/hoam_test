@@ -48,7 +48,7 @@ const User = mongoose.model('User', userSchema);
 const upload = multer({ storage: multer.memoryStorage() });
 
 const FILE_API_URL = "https://67a08egpff.execute-api.us-east-2.amazonaws.com/test/upload";
-const FILE_API_KEY = "N0I50xLGdz9LmOpHw32th8aN0nLnhhxW1vKLG5Q5";
+const FILE_API_KEY = process.env.FILE_API_KEY;
 
 // Middleware
 app.use(cors());
@@ -140,7 +140,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('chat message', async (msg) => {
     const API_URL = "https://rgo89zwyke.execute-api.us-east-2.amazonaws.com/dev/ask";
-    const CHAT_API_KEY = "MqwABFGNhC4FF1Kqu2otv7ElRos1DbuS1FCkfuJx";
+    const CHAT_API_KEY = process.env.CHAT_API_KEY;
     console.log('message:' + msg);
     io.emit('chat message', "Me: " + msg);
 

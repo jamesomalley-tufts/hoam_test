@@ -127,7 +127,6 @@ function handleLogin(event) {
 }
 
 // ---------- Chat (socket.io) ----------
-const io = new Server(server);
 const socket = io();
 let selectedDocument = null;
 

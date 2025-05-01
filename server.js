@@ -89,15 +89,31 @@ app.post('/upload', upload.any(), async (req, res) => {
 });
 
 // List uploaded files
-app.get('/api/files', (req, res) => {
-    fs.readdir('uploads', (err, files) => {
-        if (err) {
-            console.error('Failed to list uploaded files:', err);
-            return res.status(500).json({ error: 'Failed to list files' });
-        }
-        const formattedFiles = files.map(filename => ({ filename }));
-        res.json(formattedFiles);
+//app.get('/api/files', (req, res) => {
+  //  fs.readdir('uploads', (err, files) => {
+    //    if (err) {
+      //      console.error('Failed to list uploaded files:', err);
+        //    return res.status(500).json({ error: 'Failed to list files' });
+        //}
+        //const formattedFiles = files.map(filename => ({ filename }));
+        //res.json(formattedFiles);
+    //});
+//});
+
+app.get('/api/files', async (req, res) => {
+  try {
+    const response = await axios.post(DOC_API_URL, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': DOC_API_KEY,
+      },
     });
+
+    const files = JSON.parse(response.data.body);
+    res.json(files);
+  } catch (error) {
+    console.error('Error fetching files:', error);
+  }
 });
 
 // Register

@@ -63,11 +63,8 @@ async function loadFileList() {
 
     files.forEach(file => {
       const li = document.createElement('li');
-      const url = document.createElement('a');
-        url.href = file.downloadUrl;
       li.textContent = file.filename || 'Unnamed file'; // Access filename field
       fileList.appendChild(li);
-        fileList.appendChild(url);
     });
   } catch (error) {
       console.error('Error loading files:', error);

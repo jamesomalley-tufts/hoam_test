@@ -126,6 +126,20 @@ function handleLogin(event) {
     });
 }
 
+window.addEventListener('load', () => {
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+    }
+
+    loadFileList();
+
+    const uploadForm = document.getElementById('uploadForm');
+    if (uploadForm) {
+        uploadForm.addEventListener('submit', handleUpload);
+    }
+});
+
+
 // ---------- Chat (socket.io) ----------
 const socket = io();
 let selectedDocument = null;
@@ -154,16 +168,4 @@ socket.on('chat message', (msg) => {
     messages.scrollTop = messages.scrollHeight;
 });
 
-window.addEventListener('load', () => {
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-    }
-
-    loadFileList();
-
-    const uploadForm = document.getElementById('uploadForm');
-    if (uploadForm) {
-        uploadForm.addEventListener('submit', handleUpload);
-    }
-});
 

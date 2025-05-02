@@ -102,24 +102,25 @@ app.post('/upload', upload.any(), async (req, res) => {
 
 app.get('/api/files', async (req, res) => {
   try {
-    const response = await axios.post(FILE_API_URL, {}, {
+    const response = await axios.post(DOC_API_URL, {}, {
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': FILE_API_KEY,
+        'x-api-key': DOC_API_KEY,
       },
     });
 
     const files = JSON.parse(response.data.body);
-    res.json(files);
+    
+    //added
+    const formattedFiles = files.map(filename => ({ filename }));
+    res.json(formattedFiles);
+   
+    //res.json(files);
   } catch (error) {
-    //console.error('Error fetching files:', error);
-     console.error('Error fetching files:', error?.message);
-    res.status(503).json({
-      error: 'Service Unavailable',
-      details: error?.message || 'Unknown error',
-    });
+    console.error('Error fetching files:', error);
   }
 });
+
 
 // Register
 app.post('/register', async (req, res) => {

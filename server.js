@@ -51,6 +51,12 @@ const FILE_API_URL = "https://67a08egpff.execute-api.us-east-2.amazonaws.com/tes
 const FILE_API_KEY = "N0I50xLGdz9LmOpHw32th8aN0nLnhhxW1vKLG5Q5";
 
 
+// Middleware
+app.use(cors());
+app.use(express.static('public')); 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // Pages
 app.get('/', (req, res) => {
@@ -201,12 +207,6 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   })
 });
-
-// Middleware
-app.use(cors());
-app.use(express.static('public')); 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
 
 // Start server
 const PORT = process.env.PORT || 3000;

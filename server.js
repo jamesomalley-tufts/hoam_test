@@ -104,7 +104,7 @@ app.post('/upload', upload.any(), async (req, res) => {
 
 app.get('/api/files', async (req, res) => {
   try {
-    const response = await axios.post(FILE_API_URL, {}, {
+    const response = await axios.post("https://67a08egpff.execute-api.us-east-2.amazonaws.com/test/upload?action=list", {}, {
       headers: {
         'Content-Type': 'application/json',
         'x-api-key': FILE_API_KEY,

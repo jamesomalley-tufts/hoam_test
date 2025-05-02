@@ -102,10 +102,10 @@ app.post('/upload', upload.any(), async (req, res) => {
 
 app.get('/api/files', async (req, res) => {
   try {
-    const response = await axios.post(DOC_API_URL, {}, {
+    const response = await axios.post(FILE_API_URL, {}, {
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': DOC_API_KEY,
+        'x-api-key': FILE_API_KEY,
       },
     });
 

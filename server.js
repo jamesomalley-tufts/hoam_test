@@ -111,14 +111,8 @@ app.get('/api/files', async (req, res) => {
       },
     });
 
-    console.log(response.data)
     const files = JSON.parse(response.data.body);
-    
-    //added
-    const formattedFiles = files.map(filename => ({ filename }));
-    res.json(formattedFiles);
-   
-    //res.json(files);
+    res.json(files);
   } catch (error) {
     console.error('Error fetching files:', error);
   }

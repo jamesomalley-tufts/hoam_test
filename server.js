@@ -112,7 +112,12 @@ app.get('/api/files', async (req, res) => {
     const files = JSON.parse(response.data.body);
     res.json(files);
   } catch (error) {
-    console.error('Error fetching files:', error);
+    //console.error('Error fetching files:', error);
+     console.error('Error fetching files:', error?.message);
+    res.status(503).json({
+      error: 'Service Unavailable',
+      details: error?.message || 'Unknown error',
+    });
   }
 });
 

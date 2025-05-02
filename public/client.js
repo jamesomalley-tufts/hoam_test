@@ -139,7 +139,7 @@ window.addEventListener('load', () => {
     }
 });
 
-
+if (window.location.pathname.includes('/chat')) {
 // ---------- Chat (socket.io) ----------
 const socket = io();
 let selectedDocument = null;
@@ -168,4 +168,4 @@ socket.on('chat message', (msg) => {
     messages.scrollTop = messages.scrollHeight;
 });
 
-
+}

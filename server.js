@@ -113,7 +113,9 @@ app.get('/api/files', async (req, res) => {
     
     //added
     const formattedFiles = files.map(filename => ({ filename }));
-    res.json(formattedFiles);
+    res.json([{ filename: 'test-doc.pdf' }, { filename: 'notes.docx' }]);
+
+    //res.json(formattedFiles);
    
     //res.json(files);
   } catch (error) {

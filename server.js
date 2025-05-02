@@ -111,6 +111,7 @@ app.get('/api/files', async (req, res) => {
       },
     });
 
+    console.log(response.data)
     const files = JSON.parse(response.data.body);
     
     //added

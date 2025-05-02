@@ -145,7 +145,7 @@ const socket = io();
 let selectedDocument = null;
 
 // Handle chat form submission
-const form = document.getElementById('form');
+const form = document.getElementById('chatForm');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
 

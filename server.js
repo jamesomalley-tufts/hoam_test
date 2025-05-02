@@ -197,7 +197,6 @@ io.on('connection', (socket) => {
           io.emit('chat message', "The AI didn't provide a valid text response.");
         }
 
-      //io.emit('chat message', llm_response.output_text());
       console.log('LLM response', llm_response.output_text)
       } catch (error) {
       console.error("Error generating content" + error);
